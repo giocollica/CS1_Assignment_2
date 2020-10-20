@@ -109,4 +109,25 @@ int main()
 
     ifp = fopen("input.txt", "r");
     ofp = fopen("output.txt", "w");
+
+    pond *ponds;
+
+    ponds = pond_array(ifp);
+
+    return 0;
 }
+
+/*
+	for (int i = 0; i < n; i++)                     //Loop for ascending ordering
+	{
+		for (int j = 0; j < n; j++)             //Loop for comparing other values
+		{
+			if (a[j] > a[i])                //Comparing other array elements
+			{
+				int tmp = a[i];         //Using temporary variable for storing last value
+				a[i] = a[j];            //replacing value
+				a[j] = tmp;             //storing last value
+			}  
+		}
+	}
+*/	
