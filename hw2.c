@@ -28,8 +28,6 @@ typedef struct pond {
 	int ei;
     int thi;
     fish_list *fl;
-    struct pond *next;
-    struct pond *prev;
 } pond;
 
 typedef struct {
