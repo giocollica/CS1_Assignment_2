@@ -82,7 +82,7 @@ static void read_pond(FILE *ifp, pond *p)
     fill_pond(p, numPond, name, ni, ei, thi);
 }
 
-pond *pond_array(FILE *ifp)
+pond *pond_array_constructor(FILE *ifp)
 {
     int i, j;
 
@@ -112,7 +112,7 @@ int main()
 
     pond *ponds;
 
-    ponds = pond_array(ifp);
+    ponds = pond_array_constructor(ifp);
 
     return 0;
 }
