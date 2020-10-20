@@ -62,6 +62,11 @@ fish_list *new_failfish_list(void)
     return fl;
 }
 
+void dispose_failfish_list(fish_list *fl)
+{
+    free(fl);
+}
+
 static int get_num_ponds(FILE *ifp)
 {
     char s[128];
