@@ -46,6 +46,22 @@ failfish *create_failfish(int sequence_number)
     return f;
 }
 
+void dispose_failfish(failfish *f)
+{
+    free(f);
+}
+
+fish_list *new_failfish_list(void)
+{
+    fish_list *fl;
+
+    fl = malloc(sizeof(fish_list));
+    fl->head = NULL;
+    fl->tail = NULL;
+
+    return fl;
+}
+
 static int get_num_ponds(FILE *ifp)
 {
     char s[128];
