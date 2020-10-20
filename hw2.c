@@ -2,15 +2,23 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct fish {
+//Functions to use in program
+
+/*
+failfish *create_failfish(int sequence_number);
+failfish_queue *create_failfish_queue(char *pondname, int n, int e, int th);
+void print_failfish_queue(failfish_queue *q);
+*/
+
+typedef struct failfish {
 	int num;
-	struct fish *next;
-    struct fish *prev;
-} fish;
+	struct failfish *next;
+    struct failfish *prev;
+} failfish;
 
 typedef struct fish_list {
-	fish *head;
-    fish *tail;
+	failfish *head;
+    failfish *tail;
 } fish_list;
 
 typedef struct pond {
@@ -20,13 +28,14 @@ typedef struct pond {
 	int ei;
     int thi;
     fish_list *fl;
+    struct pond *next;
+    struct pond *prev;
 } pond;
 
-typedef struct pond_list {
-	pond *head;
-    pond *tail;
-} pond_list;
-
+typedef struct {
+  failfish *head;
+  failfish *tail;
+} failfish_queue;
 
 static int get_num_ponds(FILE *ifp)
 {
@@ -72,7 +81,27 @@ static void read_pond(FILE *ifp, pond *p)
     ei = atoi(ei_string);
     fscanf(ifp, "%s", thi_string);
     thi = atoi(thi_string);
-    fill_monster(p, numPond, name, ni, ei, thi);
+    fill_pond(p, numPond, name, ni, ei, thi);
+}
+
+pond *pond_array(FILE *ifp)
+{
+    int i, j;
+
+    int numPonds = get_num_ponds(ifp);
+
+    pond *ponds = calloc(numPonds, sizeof(pond));
+
+    for(i = 0; i < numPonds; i++)
+    {
+        read_pond(ifp, ponds + i);
+        for(j = 0; j < (((ponds + i)->ni) + 1); j++)
+        {
+            
+        }
+    }
+
+    return ponds;
 }
 
 int main()
