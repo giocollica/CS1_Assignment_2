@@ -67,6 +67,30 @@ void dispose_failfish_list(fish_list *fl)
     free(fl);
 }
 
+void failfish_list_add(fish_list *fl, failfish *new_failfish)
+{
+    if(fl->head == NULL)
+    {
+        /* If we're adding to an empty list, just set the head equal to the tail equal
+           to the new monster. */
+
+        fl->head = new_failfish;
+        fl->tail = new_failfish;
+        new_failfish->prev = new_failfish;
+        new_failfish->next = new_failfish;
+    } else {
+        /* If the list isn't empty, there's a head, so... */
+
+        new_failfish->prev = fl->tail;
+        new_failfish->next = fl->head;
+
+        fl->head->prev = new_failfish;
+        fl->tail->next = new_failfish;
+
+        fl->head = new_failfish;
+    }
+}
+
 static int get_num_ponds(FILE *ifp)
 {
     char s[128];
