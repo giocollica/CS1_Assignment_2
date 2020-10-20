@@ -5,7 +5,6 @@
 //Functions to use in program
 
 /*
-failfish *create_failfish(int sequence_number);
 failfish_queue *create_failfish_queue(char *pondname, int n, int e, int th);
 void print_failfish_queue(failfish_queue *q);
 */
@@ -34,6 +33,18 @@ typedef struct {
   failfish *head;
   failfish *tail;
 } failfish_queue;
+
+failfish *create_failfish(int sequence_number)
+{
+    failfish *f;
+
+    f = malloc(sizeof(failfish));
+    f->num = sequence_number;
+    f->next = NULL;
+    f->prev = NULL;
+
+    return f;
+}
 
 static int get_num_ponds(FILE *ifp)
 {
@@ -93,7 +104,7 @@ pond *pond_array_constructor(FILE *ifp)
     for(i = 0; i < numPonds; i++)
     {
         read_pond(ifp, ponds + i);
-        for(j = 0; j < (((ponds + i)->ni) + 1); j++)
+        for(j = 1; j < (((ponds + i)->ni) + 1); j++)
         {
             
         }
