@@ -159,7 +159,7 @@ pond *pond_array_constructor(FILE *ifp, int numPonds)
 
     return ponds;
 }
-
+/*
 pond *pond_array_sorter(pond *ponds, int numPonds)
 {
     int i, j;
@@ -179,7 +179,7 @@ pond *pond_array_sorter(pond *ponds, int numPonds)
 
     return ponds;
 }
-
+*/
 void print_initial_pond_status(pond *ponds, int numPonds)
 {
     int i, j;
@@ -211,7 +211,7 @@ void clear_links_or_dispose(failfish *f_to_delete, int dispose)
   }
 }
 
-void monster_list_delete(fish_list *fl, failfish *f_to_delete, int dispose)
+void fish_list_delete(fish_list *fl, failfish *f_to_delete, int dispose)
 {
     failfish *f = fl->head;
     failfish *n;
@@ -240,6 +240,30 @@ void monster_list_delete(fish_list *fl, failfish *f_to_delete, int dispose)
     clear_links_or_dispose(f_to_delete, dispose);
 }
 
+void *first_course(pond *ponds, int numPonds)
+{
+    int i, j, k;
+
+    failfish *head;
+    failfish *temp;
+
+    for(i = 0; i < numPonds; i++)
+    {
+        printf("Pond %d: %s\n", (ponds + i)->num, (ponds + i)->name);
+        fish_list *fl = (ponds + i)->fl;
+        head = fl->head;
+        for(j = 0; j < ((ponds + i)->ni) - 1; j++)
+        {
+            temp = head->next;
+            for(k = 0; k < ((ponds + i)->ni) - ((ponds + i)->thi); k++)
+            {
+                printf("Failfish %d eaten\n", temp->num);
+                fish_list_delete(fl, temp, 0);
+            }
+        }                    
+    }
+}
+
 int main()
 {
     FILE *ifp;
@@ -254,6 +278,8 @@ int main()
     ponds = pond_array_constructor(ifp, numPonds);
 
     print_initial_pond_status(ponds, numPonds);
+
+    first_course(ponds, numPonds);
 
     return 0;
 }
