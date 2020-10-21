@@ -160,22 +160,24 @@ pond *pond_array_constructor(FILE *ifp, int numPonds)
     return ponds;
 }
 
-pond *pond_array_sorter(pond *ponds)
+pond *pond_array_sorter(pond *ponds, int numPonds)
 {
-    
-	for (int i = 0; i < n; i++)                     //Loop for ascending ordering
+    int i, j;
+
+	for (i = 0; i < numPonds; i++)                     //Loop for ascending ordering
 	{
-		for (int j = 0; j < n; j++)             //Loop for comparing other values
+		for (j = 0; j < numPonds; j++)             //Loop for comparing other values
 		{
-			if (a[j] > a[i])                //Comparing other array elements
+			if ((ponds + j)->num < (ponds + i)->num)                //Comparing other array elements
 			{
-				int tmp = a[i];         //Using temporary variable for storing last value
-				a[i] = a[j];            //replacing value
-				a[j] = tmp;             //storing last value
+				pond *tmp = (ponds + i);         //Using temporary variable for storing last value
+				(ponds + i) = (ponds + j);            //replacing value
+				(ponds + j) = tmp;             //storing last value
 			}  
 		}
 	}
 
+    return ponds;
 }
 
 void print_initial_pond_status(pond *ponds)
