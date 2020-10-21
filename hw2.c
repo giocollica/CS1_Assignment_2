@@ -211,27 +211,18 @@ void clear_links_or_dispose(failfish *f_to_delete, int dispose)
   }
 }
 
-/* Delete a monster from a list of monsters.  Always removes it from the list; if
-   dispose, also disposes the monster structure from memory. */
-
 void monster_list_delete(fish_list *fl, failfish *f_to_delete, int dispose)
 {
     failfish *f = fl->head;
     failfish *n;
 
-    /* First thing to check is if this will empty the list. */
-
-    if(f_to_delete->next == f_to_delete) // We could also use if(ml->head == ml->tail)
+    if(f_to_delete->next == f_to_delete) 
     {
       clear_links_or_dispose(f_to_delete, dispose);
       fl->head = NULL;
       fl->tail = NULL;
       return;
     }
-
-    /* We now know we're not deleting the only item in the list.  To make this less 
-       messy, we're going to repair the head and/or tail pointers *before* the actual
-       linkbreaking and deletion. */
 
     if(fl->head == f_to_delete)
     {
@@ -243,15 +234,8 @@ void monster_list_delete(fish_list *fl, failfish *f_to_delete, int dispose)
       fl->tail = f_to_delete->prev;
     }
 
-    /* We now know we're deleting an item that is not the only item in the list, and
-       that is neither the head nor the tail.  We don't have to worry about head or
-       tail pointers, just about our next and prev pointers - which makes the link
-       repair really easy. */
-
     f_to_delete->prev->next = f_to_delete->next;
     f_to_delete->next->prev = f_to_delete->prev;
-
-    /* Nothing in the list points to us any more, so we can now safely delete. */
 
     clear_links_or_dispose(f_to_delete, dispose);
 }
