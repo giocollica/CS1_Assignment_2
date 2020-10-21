@@ -146,12 +146,16 @@ pond *pond_array_constructor(FILE *ifp)
 
     pond *ponds = calloc(numPonds, sizeof(pond));
 
+    failfish *f;
+
     for(i = 0; i < numPonds; i++)
     {
         read_pond(ifp, ponds + i);
+        (ponds + i)->fl = new_failfish_list();
         for(j = 1; j < (((ponds + i)->ni) + 1); j++)
         {
-            
+            f = create_failfish(j);
+            failfish_list_add((ponds + i), f);
         }
     }
 
