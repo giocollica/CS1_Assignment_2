@@ -159,7 +159,7 @@ pond *pond_array_constructor(FILE *ifp, int numPonds)
 
     return ponds;
 }
-
+/*
 pond *pond_array_sorter(pond *ponds, int numPonds)
 {
     int i, j;
@@ -179,14 +179,21 @@ pond *pond_array_sorter(pond *ponds, int numPonds)
 
     return ponds;
 }
-
-void print_initial_pond_status(pond *ponds)
+*/
+void print_initial_pond_status(pond *ponds, int numPonds)
 {
     int i, j;
     
     printf("Initial Pond Status\n");
-    for(i = 0; )    
-
+    for(i = 0; i < numPonds; i++)
+    {
+        printf("%d %s %d", (ponds + i)->num, (ponds + i)->name, (ponds + i)->fl->head->num);
+        for(j = 0; j < (ponds + i)->ni; j++)
+        {
+            printf(" %d", (ponds + i)->fl->head->next->num);
+        }
+        printf("\n");
+    }    
 }
 
 int main()
@@ -201,6 +208,8 @@ int main()
     pond *ponds;
 
     ponds = pond_array_constructor(ifp, numPonds);
+
+    print_initial_pond_status(ponds, numPonds);
 
     return 0;
 }
