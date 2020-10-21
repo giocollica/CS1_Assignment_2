@@ -152,10 +152,10 @@ pond *pond_array_constructor(FILE *ifp)
     {
         read_pond(ifp, ponds + i);
         (ponds + i)->fl = new_failfish_list();
-        for(j = 1; j < (((ponds + i)->ni) + 1); j++)
+        for(j = (ponds + i)->ni; j > 0; j--)
         {
             f = create_failfish(j);
-            failfish_list_add((ponds + i), f);
+            failfish_list_add((ponds + i)->fl, f);
         }
     }
 
