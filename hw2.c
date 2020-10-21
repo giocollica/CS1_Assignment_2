@@ -183,14 +183,19 @@ pond *pond_array_sorter(pond *ponds, int numPonds)
 void print_initial_pond_status(pond *ponds, int numPonds)
 {
     int i, j;
+
+    //failfish *f = (ponds + i)->fl->head;
     
     printf("Initial Pond Status\n");
     for(i = 0; i < numPonds; i++)
     {
-        printf("%d %s %d", (ponds + i)->num, (ponds + i)->name, (ponds + i)->fl->head->num);
-        for(j = 0; j < (ponds + i)->ni; j++)
+        failfish *f = (ponds + i)->fl->head;
+        printf("%d %s %d", (ponds + i)->num, (ponds + i)->name, f->num);
+
+        for(j = 0; j < ((ponds + i)->ni) - 1; j++)
         {
-            printf(" %d", (ponds + i)->fl->head->next->num);
+            printf(" %d", f->next->num);
+            f = f->next;
         }
         printf("\n");
     }    
