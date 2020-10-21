@@ -162,6 +162,16 @@ pond *pond_array_constructor(FILE *ifp)
     return ponds;
 }
 
+void print_initial_pond_status(pond *ponds)
+{
+    int i, j;
+    
+    printf("Initial Pond Status\n");
+    for(i = 0; )    
+
+}
+
+
 int main()
 {
     FILE *ifp;
