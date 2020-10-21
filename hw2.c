@@ -138,11 +138,9 @@ static void read_pond(FILE *ifp, pond *p)
     fill_pond(p, numPond, name, ni, ei, thi);
 }
 
-pond *pond_array_constructor(FILE *ifp)
+pond *pond_array_constructor(FILE *ifp, int numPonds)
 {
     int i, j;
-
-    int numPonds = get_num_ponds(ifp);
 
     pond *ponds = calloc(numPonds, sizeof(pond));
 
@@ -180,9 +178,10 @@ int main()
     ifp = fopen("input.txt", "r");
     ofp = fopen("output.txt", "w");
 
+    int numPonds = get_num_ponds(ifp);
     pond *ponds;
 
-    ponds = pond_array_constructor(ifp);
+    ponds = pond_array_constructor(ifp, numPonds);
 
     return 0;
 }
