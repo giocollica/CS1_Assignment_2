@@ -247,30 +247,31 @@ pond *first_course(pond *ponds, int numPonds)
     int i, j, k;
 
     //failfish *head;
-    failfish *temp, *fish;
+    fish_list *temp;
 
     for(i = 0; i < numPonds; i++)
     {
         printf("Pond %d: %s\n", (ponds + i)->num, (ponds + i)->name);
-        temp = (ponds + i)->fl->head;
+        temp = (ponds + i)->fl;
         for(j = 0; j < ((ponds + i)->ei) - 1; j++)
         {
-            temp = temp->next;
+            temp->head = temp->head->next;
         }
 
-        fish = temp;
 
         for(j = 0; j < ((ponds + i)->ni) - ((ponds + i)->thi); j++)
         {
             
-            printf("Failfish %d eaten\n", fish->num);
+            printf("Failfish %d eaten\n", temp->head->num);
             //fish_list_delete((ponds + i)->fl, fish, 0);
-            fish_list_delete((ponds + i)->fl, (ponds + i)->fl->head, (ponds + i)->fl->head->num);
+            fish_list_delete((ponds + i)->fl, temp->head, (ponds + i)->thi);
             for(k = 0; k < ((ponds + i)->ei) - 1; k++)
             {
-                fish = fish->next;
+                temp->head = temp->head->next;
             }
         }
+
+        (ponds + i)->fl->head = (ponds + i)->fl->head->next;
     }
 
     return ponds;
