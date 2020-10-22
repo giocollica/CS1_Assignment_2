@@ -159,27 +159,29 @@ pond *pond_array_constructor(FILE *ifp, int numPonds)
 
     return ponds;
 }
-/*
+
 pond *pond_array_sorter(pond *ponds, int numPonds)
 {
     int i, j;
+
+    pond *sortedPonds;
 
 	for (i = 0; i < numPonds; i++)                     //Loop for ascending ordering
 	{
 		for (j = 0; j < numPonds; j++)             //Loop for comparing other values
 		{
-			if ((ponds + j)->num < (ponds + i)->num)                //Comparing other array elements
+			if ((ponds + j)->num > (ponds + i)->num)                //Comparing other array elements
 			{
-				pond *tmp = (ponds + i);         //Using temporary variable for storing last value
-				(ponds + i) = (ponds + j);            //replacing value
-				(ponds + j) = tmp;             //storing last value
-			}  
+				pond tmp = ponds[i];         //Using temporary variable for storing last value
+				ponds[i] = ponds[j];            //replacing value
+				ponds[j] = tmp;             //storing last value
+			}
 		}
 	}
 
     return ponds;
 }
-*/
+
 void print_initial_pond_status(pond *ponds, int numPonds)
 {
     int i, j;
@@ -213,8 +215,8 @@ void clear_links_or_dispose(failfish *f_to_delete, int dispose)
 
 void fish_list_delete(fish_list *fl, failfish *f_to_delete, int dispose)
 {
-    failfish *f = fl->head;
-    failfish *n;
+    //failfish *f = fl->head;
+    //failfish *n;
 
     if(f_to_delete->next == f_to_delete) 
     {
@@ -245,7 +247,7 @@ void first_course(pond *ponds, int numPonds)
     int i, j, k;
 
     //failfish *head;
-    failfish *temp;
+    failfish *temp, *fish;
 
     for(i = 0; i < numPonds; i++)
     {
@@ -257,13 +259,18 @@ void first_course(pond *ponds, int numPonds)
             temp = temp->next;
         }
 
+        fish = temp;
+
         for(j = 0; j < ((ponds + i)->ni) - ((ponds + i)->thi); j++)
         {
-            printf("Failfish %d eaten\n", temp->num);
-            fish_list_delete((ponds + i)->fl, temp, 0);
+            
+            printf("Failfish %d eaten\n", fish->num);
+            fish_list_delete((ponds + i)->fl, fish, 0);
             for(k = 0; k < ((ponds + i)->ei) - 1; k++)
             {
-                temp = temp->next;
+
+
+                fish = fish->next;
             }
         }
     }
@@ -307,9 +314,61 @@ int main()
 
     ponds = pond_array_constructor(ifp, numPonds);
 
+    ponds = pond_array_sorter(ponds, numPonds);
+
     print_initial_pond_status(ponds, numPonds);
 
     first_course(ponds, numPonds);
 
     return 0;
 }
+
+
+/*
+void deleteNode(struct Node* head, int key) 
+{ 
+    if (head == NULL) 
+        return; 
+  
+    // Find the required node 
+    struct Node *curr = head, *prev; 
+    while (curr->data != key) { 
+        if (curr->next == head) { 
+            printf("\nGiven node is not found"
+                   " in the list!!!"); 
+            break; 
+        } 
+  
+        prev = curr; 
+        curr = curr->next; 
+    } 
+  
+    // Check if node is only node 
+    if (curr->next == head) { 
+        head = NULL; 
+        free(curr); 
+        return; 
+    } 
+  
+    // If more than one node, check if 
+    // it is first node 
+    if (curr == head) { 
+        prev = head; 
+        while (prev->next != head) 
+            prev = prev->next; 
+        head = curr->next; 
+        prev->next = head; 
+        free(curr); 
+    } 
+  
+    // check if node is last node 
+    else if (curr->next == head) { 
+        prev->next = head; 
+        free(curr); 
+    } 
+    else { 
+        prev->next = curr->next; 
+        free(curr); 
+    } 
+} 
+*/
