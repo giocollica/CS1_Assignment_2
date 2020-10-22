@@ -270,8 +270,12 @@ pond *first_course(pond *ponds, int numPonds)
                 temp->head = temp->head->next;
             }
         }
-
-        (ponds + i)->fl->head = (ponds + i)->fl->head->next;
+        /*
+        for(j = 0; j < ((ponds + i)->thi) + 1; j++)
+        {
+            (ponds + i)->fl->head = (ponds + i)->fl->head->next;
+        }
+        */
     }
 
     return ponds;
