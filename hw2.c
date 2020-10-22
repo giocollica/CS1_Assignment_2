@@ -272,6 +272,8 @@ pond *first_course(pond *ponds, int numPonds)
             }
         }
     }
+
+    return ponds;
 }
 
 /*
@@ -299,6 +301,28 @@ void first_course(pond *ponds, int numPonds)
     }
 }
 */
+
+void print_end_pond_status(pond *ponds, int numPonds)
+{
+    int i, j;
+
+    //failfish *f = (ponds + i)->fl->head;
+    
+    printf("End of Course Pond Status\n");
+    for(i = 0; i < numPonds; i++)
+    {
+        failfish *f = (ponds + i)->fl->head;
+        printf("%d %s %d", (ponds + i)->num, (ponds + i)->name, f->num);
+
+        for(j = 0; j < ((ponds + i)->ni) - 1; j++)
+        {
+            printf(" %d", f->next->num);
+            f = f->next;
+        }
+        printf("\n");
+    }    
+}
+
 int main()
 {
     FILE *ifp;
@@ -316,7 +340,9 @@ int main()
 
     print_initial_pond_status(ponds, numPonds);
 
-    first_course(ponds, numPonds);
+    ponds = first_course(ponds, numPonds);
+
+    print_end_pond_status(ponds, numPonds);
 
     return 0;
 }
