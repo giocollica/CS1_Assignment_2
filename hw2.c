@@ -242,7 +242,7 @@ void fish_list_delete(fish_list *fl, failfish *f_to_delete, int dispose)
     clear_links_or_dispose(f_to_delete, dispose);
 }
 
-void first_course(pond *ponds, int numPonds)
+pond *first_course(pond *ponds, int numPonds)
 {
     int i, j, k;
 
@@ -264,7 +264,8 @@ void first_course(pond *ponds, int numPonds)
         {
             
             printf("Failfish %d eaten\n", fish->num);
-            fish_list_delete((ponds + i)->fl, fish, 0);
+            //fish_list_delete((ponds + i)->fl, fish, 0);
+            fish_list_delete((ponds + i)->fl, (ponds + i)->fl->head, (ponds + i)->fl->head->num);
             for(k = 0; k < ((ponds + i)->ei) - 1; k++)
             {
                 fish = fish->next;
