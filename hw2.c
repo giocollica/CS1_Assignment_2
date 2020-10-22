@@ -255,7 +255,6 @@ void first_course(pond *ponds, int numPonds)
         temp = (ponds + i)->fl->head;
         for(j = 0; j < ((ponds + i)->ei) - 1; j++)
         {
-            
             temp = temp->next;
         }
 
@@ -268,8 +267,6 @@ void first_course(pond *ponds, int numPonds)
             fish_list_delete((ponds + i)->fl, fish, 0);
             for(k = 0; k < ((ponds + i)->ei) - 1; k++)
             {
-
-
                 fish = fish->next;
             }
         }
