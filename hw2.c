@@ -315,32 +315,6 @@ pond *pond_fishlist_sorter(pond *ponds, int numPonds)
     return ponds;
 }
 
-/*
-void first_course(pond *ponds, int numPonds)
-{
-    int i, j, k;
-
-    failfish *head;
-    failfish *temp;
-
-    for(i = 0; i < numPonds; i++)
-    {
-        printf("Pond %d: %s\n", (ponds + i)->num, (ponds + i)->name);
-        fish_list *fl = (ponds + i)->fl;
-        head = fl->head;
-        for(j = 0; j < ((ponds + i)->ni) - 1; j++)
-        {
-            temp = head->next;
-            for(k = 0; k < ((ponds + i)->ni) - ((ponds + i)->thi); k++)
-            {
-                printf("Failfish %d eaten\n", temp->num);
-                fish_list_delete(fl, temp, 0);
-            }
-        }                    
-    }
-}
-*/
-
 void print_end_pond_status(pond *ponds, int numPonds)
 {
     int i, j;
