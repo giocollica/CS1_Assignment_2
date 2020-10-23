@@ -246,19 +246,8 @@ pond *first_course(pond *ponds, int numPonds)
 {
     int i, j, k;
 
-    //failfish *head;
     fish_list *temp;
 
-    //To fix issue of linked lists being out of order after running through first course function
-    /*
-        What I do is before each while loop, for each pond I go, 
-
-        pl[i]->list->head = pl[i]->list->head->prev
-        I figured out that from wherever I was from what I was doing before, this got me to the first value
-        and then to travel in my swap I use the same line
-        And the same thing again after deleting
-        obviously there’s a much better explanation for this and a better way but like, it worked for me and so I just stuck with it
-    */
     for(i = 0; i < numPonds; i++)
     {
         printf("Pond %d: %s\n", (ponds + i)->num, (ponds + i)->name);
@@ -266,8 +255,8 @@ pond *first_course(pond *ponds, int numPonds)
         for(j = 0; j < ((ponds + i)->ei) - 1; j++)
         {
             temp->head = temp->head->next;
+            temp->tail = temp->head->prev;
         }
-
 
         for(j = 0; j < ((ponds + i)->ni) - ((ponds + i)->thi); j++)
         {
@@ -278,14 +267,9 @@ pond *first_course(pond *ponds, int numPonds)
             for(k = 0; k < ((ponds + i)->ei) - 1; k++)
             {
                 temp->head = temp->head->next;
+                temp->tail = temp->head->prev;
             }
         }
-        /*
-        for(j = 0; j < ((ponds + i)->thi) + 1; j++)
-        {
-            (ponds + i)->fl->head = (ponds + i)->fl->head->next;
-        }
-        */
     }
 
     return ponds;
@@ -300,14 +284,20 @@ pond *pond_fishlist_sorter(pond *ponds, int numPonds)
     {
         for (i = 0; i < (ponds + k)->thi; i++) //Loop for ascending ordering
         {
-            for (j = 0; j < (ponds + k)->thi; j++) //Loop for comparing other values
+            while ((ponds + k)->fl->head->num > (ponds + k)->fl->head->next->num) //Loop for comparing other values
             {
-                if ((ponds + k)->fl->head->num > (ponds + k)->fl->head->next->num) //Comparing other array elements
-                {
-                    //failfish *tmp = (ponds + k)->fl->head;               //Using temporary variable for storing last value
-                    (ponds + k)->fl->head = (ponds + k)->fl->head->next; //replacing value
-                    //(ponds + k)->fl->head->next = tmp;                   //storing last value
-                }
+
+                //failfish *tmp = (ponds + k)->fl->head;               //Using temporary variable for storing last value
+                (ponds + k)->fl->head = (ponds + k)->fl->head->next; //replacing value
+                                                                     //(ponds + k)->fl->head->next = tmp;                   //storing last value
+            }
+
+            while ((ponds + k)->fl->head->num > (ponds + k)->fl->tail->num) //Loop for comparing other values
+            {
+
+                //failfish *tmp = (ponds + k)->fl->head;               //Using temporary variable for storing last value
+                (ponds + k)->fl->head = (ponds + k)->fl->head->next; //replacing value
+                                                                     //(ponds + k)->fl->head->next = tmp;                   //storing last value
             }
         }
     }
@@ -341,7 +331,7 @@ int main()
     FILE *ifp;
     FILE *ofp;
 
-    ifp = fopen("input.txt", "r");
+    ifp = fopen("input2.txt", "r");
     ofp = fopen("output.txt", "w");
 
     int numPonds = get_num_ponds(ifp);
