@@ -291,6 +291,30 @@ pond *first_course(pond *ponds, int numPonds)
     return ponds;
 }
 
+pond *pond_fishlist_sorter(pond *ponds, int numPonds)
+{
+    int i, j, k;
+
+    pond *sortedPonds;
+    for (k = 0; k < numPonds; k++)
+    {
+        for (i = 0; i < (ponds + k)->thi; i++) //Loop for ascending ordering
+        {
+            for (j = 0; j < (ponds + k)->thi; j++) //Loop for comparing other values
+            {
+                if ((ponds + k)->fl->head->num > (ponds + k)->fl->head->next->num) //Comparing other array elements
+                {
+                    //failfish *tmp = (ponds + k)->fl->head;               //Using temporary variable for storing last value
+                    (ponds + k)->fl->head = (ponds + k)->fl->head->next; //replacing value
+                    //(ponds + k)->fl->head->next = tmp;                   //storing last value
+                }
+            }
+        }
+    }
+
+    return ponds;
+}
+
 /*
 void first_course(pond *ponds, int numPonds)
 {
@@ -356,6 +380,8 @@ int main()
     print_initial_pond_status(ponds, numPonds);
 
     ponds = first_course(ponds, numPonds);
+
+    ponds = pond_fishlist_sorter(ponds, numPonds);
 
     print_end_pond_status(ponds, numPonds);
 
