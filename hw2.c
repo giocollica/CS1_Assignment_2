@@ -331,7 +331,7 @@ int main()
     FILE *ifp;
     FILE *ofp;
 
-    ifp = fopen("input2.txt", "r");
+    ifp = fopen("input.txt", "r");
     ofp = fopen("output.txt", "w");
 
     int numPonds = get_num_ponds(ifp);
@@ -351,26 +351,3 @@ int main()
 
     return 0;
 }
-/*
-int smallestElement(struct Node* head) 
-{ 
-    // Declare a min variable and initialize 
-    // it with INT_MAX value. 
-    // INT_MAX is integer type and its value 
-    // is 32767 or greater. 
-    int min = INT_MAX; 
-  
-    // Check loop while head not equal to NULL 
-    while (head != NULL) { 
-  
-        // If min is greater then head->data then 
-        // assign value of head->data to min 
-        // otherwise node point to next node. 
-        if (min > head->data) 
-            min = head->data; 
-  
-        head = head->next; 
-    } 
-    return min; 
-}
-*/
