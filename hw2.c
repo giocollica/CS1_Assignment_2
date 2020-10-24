@@ -292,6 +292,30 @@ pond *pond_fishlist_sorter(pond *ponds, int numPonds)
     return ponds;
 }
 
+pond *pond_fishlist_tail_fixer(pond *ponds, int numPonds)
+{
+    int i, j, k;
+
+    pond *sortedPonds;
+    for (k = 0; k < numPonds; k++)
+    {
+        for (i = (ponds + i)->thi; i > 0; i--) 
+        {
+            while ((ponds + k)->fl->tail->num < (ponds + k)->fl->tail->next->num) 
+            {
+                (ponds + k)->fl->tail = (ponds + k)->fl->tail->next;
+            }
+
+            while ((ponds + k)->fl->tail->num < (ponds + k)->fl->tail->num) 
+            {
+                (ponds + k)->fl->tail = (ponds + k)->fl->tail->next;
+            }
+        }
+    }
+
+    return ponds;
+}
+
 void print_end_pond_status(pond *ponds, int numPonds)
 {
     int i, j;
