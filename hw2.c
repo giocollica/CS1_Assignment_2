@@ -1,8 +1,20 @@
+/*
+    Giovanni Collica
+    COP 3052C
+    Mr. Matthew Gerber
+    Programming Assignment 2
+*/
+
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "leak_detector_c.h"
 
+
+
+//structures for program
 typedef struct failfish
 {
     int num;
@@ -27,6 +39,9 @@ typedef struct pond
     fish_list *fq;
 } pond;
 
+
+
+//function to allocate a single failfish and fill in elements
 static failfish *create_failfish(int sequence_number)
 {
     failfish *f;
@@ -39,11 +54,13 @@ static failfish *create_failfish(int sequence_number)
     return f;
 }
 
+//function to free a single failfish in memory
 static void dispose_failfish(failfish *f)
 {
     free(f);
 }
 
+//function to allocate a new failfish list and fill in elements
 static fish_list *new_failfish_list(void)
 {
     fish_list *fl;
@@ -55,11 +72,14 @@ static fish_list *new_failfish_list(void)
     return fl;
 }
 
+
+//function to free a failfish list in memory
 static void dispose_failfish_list(fish_list *fl)
 {
     free(fl);
 }
 
+//function to add a failfish to a failfish list
 static void failfish_list_add(fish_list *fl, failfish *new_failfish)
 {
     if (fl->head == NULL)
@@ -81,6 +101,7 @@ static void failfish_list_add(fish_list *fl, failfish *new_failfish)
     }
 }
 
+//function to read in the number of ponds from the input file
 static int get_num_ponds(FILE *ifp)
 {
     char s[128];
@@ -93,6 +114,7 @@ static int get_num_ponds(FILE *ifp)
     return num;
 }
 
+//function to fill in elements of a pond
 static void fill_pond(pond *p, int numPond, char *name, int ni, int ei, int thi)
 {
     p->num = numPond;
@@ -102,6 +124,7 @@ static void fill_pond(pond *p, int numPond, char *name, int ni, int ei, int thi)
     p->thi = thi;
 }
 
+//function to read in values of a pond from the input file
 static void read_pond(FILE *ifp, pond *p)
 {
     char numPond_string[128];
@@ -126,6 +149,7 @@ static void read_pond(FILE *ifp, pond *p)
     fill_pond(p, numPond, name, ni, ei, thi);
 }
 
+//contructor to create and allocate each pond into a pond array
 static pond *pond_array_constructor(FILE *ifp, int numPonds)
 {
     int i, j;
@@ -149,11 +173,13 @@ static pond *pond_array_constructor(FILE *ifp, int numPonds)
     return ponds;
 }
 
+//function to free a single pond from memory
 static void dispose_pond(pond *p)
 {
     free(p);
 }
 
+//function to sort the pond array from least to greatest by pond number
 static pond *pond_array_sorter(pond *ponds, int numPonds)
 {
     int i, j;
@@ -174,6 +200,7 @@ static pond *pond_array_sorter(pond *ponds, int numPonds)
     return ponds;
 }
 
+//function to print the initial status of each pond
 static void print_initial_pond_status(FILE *ofp, pond *ponds, int numPonds)
 {
     int i, j;
@@ -193,6 +220,7 @@ static void print_initial_pond_status(FILE *ofp, pond *ponds, int numPonds)
     }
 }
 
+//disposes failfish if wanted, otherwise it will set both of its links to null
 static void clear_links_or_dispose(failfish *f_to_delete, int dispose)
 {
     if (dispose != 0)
@@ -206,6 +234,7 @@ static void clear_links_or_dispose(failfish *f_to_delete, int dispose)
     }
 }
 
+//Deletes a failfish from a list of failfish.
 static void fish_list_delete(fish_list *fl, failfish *f_to_delete, int dispose)
 {
     if (f_to_delete->next == f_to_delete)
@@ -232,6 +261,7 @@ static void fish_list_delete(fish_list *fl, failfish *f_to_delete, int dispose)
     clear_links_or_dispose(f_to_delete, dispose);
 }
 
+//function for the first course
 static pond *first_course(FILE *ofp, pond *ponds, int numPonds)
 {
     int i, j, k;
@@ -240,16 +270,21 @@ static pond *first_course(FILE *ofp, pond *ponds, int numPonds)
 
     fprintf(ofp, "\nFirst Course\n");
 
+    //itierates through each pond
     for (i = 0; i < numPonds; i++)
     {
         fprintf(ofp, "\nPond %d: %s\n", (ponds + i)->num, (ponds + i)->name);
         temp = (ponds + i)->fl;
+        //sets new head and tail value for the elements
+        //that need to be deleted from the list
         for (j = 0; j < ((ponds + i)->ei) - 1; j++)
         {
             temp->head = temp->head->next;
             temp->tail = temp->head->prev;
         }
 
+        //outputs to file the failfish that has been eaten
+        //a deletes from the failfish list
         for (j = 0; j < ((ponds + i)->ni) - ((ponds + i)->thi); j++)
         {
             fprintf(ofp, "Failfish %d eaten\n", temp->head->num);
@@ -265,6 +300,7 @@ static pond *first_course(FILE *ofp, pond *ponds, int numPonds)
     return ponds;
 }
 
+//sort failfish list from least to greatest
 static pond *pond_fishlist_sorter(pond *ponds, int numPonds)
 {
     int i, k;
@@ -288,6 +324,8 @@ static pond *pond_fishlist_sorter(pond *ponds, int numPonds)
     return ponds;
 }
 
+//function to fix the tail for each fishlist after it has gone through
+//the first_course function and pond_fishlist_sorter function
 static pond *pond_fishlist_tail_fixer(pond *ponds, int numPonds)
 {
     int i, k;
@@ -311,6 +349,7 @@ static pond *pond_fishlist_tail_fixer(pond *ponds, int numPonds)
     return ponds;
 }
 
+//function to print the status of each pond after it has gone through the first course
 static void print_end_pond_status(FILE *ofp, pond *ponds, int numPonds)
 {
     int i, j;
@@ -330,6 +369,7 @@ static void print_end_pond_status(FILE *ofp, pond *ponds, int numPonds)
     }
 }
 
+//function to initialize the failfish queue for each pond
 static pond *initialize_failfish_queue(pond *ponds, int numPonds)
 {
     int i;
@@ -343,6 +383,7 @@ static pond *initialize_failfish_queue(pond *ponds, int numPonds)
     return ponds;
 }
 
+//function to sort the ponds based on the requirments layed out in the assignment
 static pond *pond_queue_sorter(pond *ponds, int numPonds)
 {
     int i, j;
@@ -351,12 +392,16 @@ static pond *pond_queue_sorter(pond *ponds, int numPonds)
     {
         for (j = 0; j < numPonds; j++)
         {
+            //sorts the ponds based on their first number in their
+            //failfish list from greatest to least
             if ((ponds + j)->fl->head->num < (ponds + i)->fl->head->num)
             {
                 pond tmp = ponds[i];
                 ponds[i] = ponds[j];
                 ponds[j] = tmp;
             }
+            //if ponds have same value for their first value in their failfish
+            //list the pond with lowest number is set first
             if ((ponds + j)->fl->head->num == (ponds + i)->fl->head->num)
             {
                 if ((ponds + j)->num > (ponds + i)->num)
@@ -372,6 +417,7 @@ static pond *pond_queue_sorter(pond *ponds, int numPonds)
     return ponds;
 }
 
+//function to go through the second course
 static pond *second_course(FILE *ofp, pond *ponds, int numPonds)
 {
     ponds = initialize_failfish_queue(ponds, numPonds);
@@ -388,6 +434,7 @@ static pond *second_course(FILE *ofp, pond *ponds, int numPonds)
     for (i = 0; i < numPonds; i++)
     {
         temp = (ponds + i)->fq;
+        //goes through each pond before the final one and displays the failfish that was eaten
         if (i < numPonds)
         {
             for (j = 0; j < (ponds + i)->thi; j++)
@@ -396,6 +443,8 @@ static pond *second_course(FILE *ofp, pond *ponds, int numPonds)
                 temp->head = temp->head->next;
             }
         }
+        //the final pond has every failfish eaten except the last one
+        //this failfish becomes the surviving failfish
         if (i == numPonds - 1)
         {
             for (j = 0; j < ((ponds + i)->thi) - 1; j++)
@@ -412,6 +461,7 @@ static pond *second_course(FILE *ofp, pond *ponds, int numPonds)
     return ponds;
 }
 
+//function to free all allocated memory for ponds, failfish list, and failfish
 static void dispose_ponds_all(pond *ponds, int numPonds)
 {
     int i, j, k;
@@ -455,6 +505,7 @@ static void dispose_ponds_all(pond *ponds, int numPonds)
     }
 }
 
+//main function
 int main(void)
 {
     atexit(report_mem_leak);
