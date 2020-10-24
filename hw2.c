@@ -27,7 +27,7 @@ typedef struct pond
     fish_list *fq;
 } pond;
 
-failfish *create_failfish(int sequence_number)
+static failfish *create_failfish(int sequence_number)
 {
     failfish *f;
 
@@ -39,12 +39,12 @@ failfish *create_failfish(int sequence_number)
     return f;
 }
 
-void dispose_failfish(failfish *f)
+static void dispose_failfish(failfish *f)
 {
     free(f);
 }
 
-fish_list *new_failfish_list(void)
+static fish_list *new_failfish_list(void)
 {
     fish_list *fl;
 
@@ -55,12 +55,12 @@ fish_list *new_failfish_list(void)
     return fl;
 }
 
-void dispose_failfish_list(fish_list *fl)
+static void dispose_failfish_list(fish_list *fl)
 {
     free(fl);
 }
 
-void failfish_list_add(fish_list *fl, failfish *new_failfish)
+static void failfish_list_add(fish_list *fl, failfish *new_failfish)
 {
     if (fl->head == NULL)
     {
@@ -126,7 +126,7 @@ static void read_pond(FILE *ifp, pond *p)
     fill_pond(p, numPond, name, ni, ei, thi);
 }
 
-pond *pond_array_constructor(FILE *ifp, int numPonds)
+static pond *pond_array_constructor(FILE *ifp, int numPonds)
 {
     int i, j;
 
@@ -149,7 +149,7 @@ pond *pond_array_constructor(FILE *ifp, int numPonds)
     return ponds;
 }
 
-pond *pond_array_sorter(pond *ponds, int numPonds)
+static pond *pond_array_sorter(pond *ponds, int numPonds)
 {
     int i, j;
 
@@ -171,7 +171,7 @@ pond *pond_array_sorter(pond *ponds, int numPonds)
     return ponds;
 }
 
-void print_initial_pond_status(FILE *ofp, pond *ponds, int numPonds)
+static void print_initial_pond_status(FILE *ofp, pond *ponds, int numPonds)
 {
     int i, j;
 
@@ -190,7 +190,7 @@ void print_initial_pond_status(FILE *ofp, pond *ponds, int numPonds)
     }
 }
 
-void clear_links_or_dispose(failfish *f_to_delete, int dispose)
+static void clear_links_or_dispose(failfish *f_to_delete, int dispose)
 {
     if (dispose != 0)
     {
@@ -203,7 +203,7 @@ void clear_links_or_dispose(failfish *f_to_delete, int dispose)
     }
 }
 
-void fish_list_delete(fish_list *fl, failfish *f_to_delete, int dispose)
+static void fish_list_delete(fish_list *fl, failfish *f_to_delete, int dispose)
 {
     if (f_to_delete->next == f_to_delete)
     {
@@ -229,7 +229,7 @@ void fish_list_delete(fish_list *fl, failfish *f_to_delete, int dispose)
     clear_links_or_dispose(f_to_delete, dispose);
 }
 
-pond *first_course(FILE *ofp, pond *ponds, int numPonds)
+static pond *first_course(FILE *ofp, pond *ponds, int numPonds)
 {
     int i, j, k;
 
@@ -262,7 +262,7 @@ pond *first_course(FILE *ofp, pond *ponds, int numPonds)
     return ponds;
 }
 
-pond *pond_fishlist_sorter(pond *ponds, int numPonds)
+static pond *pond_fishlist_sorter(pond *ponds, int numPonds)
 {
     int i, j, k;
 
@@ -286,7 +286,7 @@ pond *pond_fishlist_sorter(pond *ponds, int numPonds)
     return ponds;
 }
 
-pond *pond_fishlist_tail_fixer(pond *ponds, int numPonds)
+static pond *pond_fishlist_tail_fixer(pond *ponds, int numPonds)
 {
     int i, j, k;
 
@@ -310,7 +310,7 @@ pond *pond_fishlist_tail_fixer(pond *ponds, int numPonds)
     return ponds;
 }
 
-void print_end_pond_status(FILE *ofp, pond *ponds, int numPonds)
+static void print_end_pond_status(FILE *ofp, pond *ponds, int numPonds)
 {
     int i, j;
 
@@ -329,7 +329,7 @@ void print_end_pond_status(FILE *ofp, pond *ponds, int numPonds)
     }
 }
 
-pond *initialize_failfish_queue(pond *ponds, int numPonds)
+static pond *initialize_failfish_queue(pond *ponds, int numPonds)
 {
     int i, j, k;
 
@@ -342,7 +342,7 @@ pond *initialize_failfish_queue(pond *ponds, int numPonds)
     return ponds;
 }
 
-pond *pond_queue_sorter(pond *ponds, int numPonds)
+static pond *pond_queue_sorter(pond *ponds, int numPonds)
 {
     int i, j;
 
@@ -373,7 +373,7 @@ pond *pond_queue_sorter(pond *ponds, int numPonds)
     return ponds;
 }
 
-pond *second_course(FILE *ofp, pond *ponds, int numPonds)
+static pond *second_course(FILE *ofp, pond *ponds, int numPonds)
 {
     ponds = initialize_failfish_queue(ponds, numPonds);
 
@@ -415,7 +415,7 @@ pond *second_course(FILE *ofp, pond *ponds, int numPonds)
     return ponds;
 }
 
-int main()
+int main(void)
 {
     atexit(report_mem_leak);
 
