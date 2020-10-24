@@ -170,22 +170,22 @@ pond *pond_array_sorter(pond *ponds, int numPonds)
     return ponds;
 }
 
-void print_initial_pond_status(pond *ponds, int numPonds)
+void print_initial_pond_status(FILE *ofp, pond *ponds, int numPonds)
 {
     int i, j;
 
-    printf("Initial Pond Status\n");
+    fprintf(ofp, "Initial Pond Status\n");
     for (i = 0; i < numPonds; i++)
     {
         failfish *f = (ponds + i)->fl->head;
-        printf("%d %s %d", (ponds + i)->num, (ponds + i)->name, f->num);
+        fprintf(ofp, "%d %s %d", (ponds + i)->num, (ponds + i)->name, f->num);
 
         for (j = 0; j < ((ponds + i)->ni) - 1; j++)
         {
-            printf(" %d", f->next->num);
+            fprintf(ofp, " %d", f->next->num);
             f = f->next;
         }
-        printf("\n");
+        fprintf(ofp, "\n");
     }
 }
 
@@ -228,17 +228,17 @@ void fish_list_delete(fish_list *fl, failfish *f_to_delete, int dispose)
     clear_links_or_dispose(f_to_delete, dispose);
 }
 
-pond *first_course(pond *ponds, int numPonds)
+pond *first_course(FILE *ofp, pond *ponds, int numPonds)
 {
     int i, j, k;
 
     fish_list *temp;
 
-    printf("\nFirst Course\n");
+    fprintf(ofp, "\nFirst Course\n");
 
     for (i = 0; i < numPonds; i++)
     {
-        printf("\nPond %d: %s\n", (ponds + i)->num, (ponds + i)->name);
+        fprintf(ofp, "\nPond %d: %s\n", (ponds + i)->num, (ponds + i)->name);
         temp = (ponds + i)->fl;
         for (j = 0; j < ((ponds + i)->ei) - 1; j++)
         {
@@ -248,7 +248,7 @@ pond *first_course(pond *ponds, int numPonds)
 
         for (j = 0; j < ((ponds + i)->ni) - ((ponds + i)->thi); j++)
         {
-            printf("Failfish %d eaten\n", temp->head->num);
+            fprintf(ofp, "Failfish %d eaten\n", temp->head->num);
             fish_list_delete((ponds + i)->fl, temp->head, (ponds + i)->thi);
             for (k = 0; k < ((ponds + i)->ei) - 1; k++)
             {
@@ -309,22 +309,22 @@ pond *pond_fishlist_tail_fixer(pond *ponds, int numPonds)
     return ponds;
 }
 
-void print_end_pond_status(pond *ponds, int numPonds)
+void print_end_pond_status(FILE *ofp, pond *ponds, int numPonds)
 {
     int i, j;
 
-    printf("\nEnd of Course Pond Status\n");
+    fprintf(ofp, "\nEnd of Course Pond Status\n");
     for (i = 0; i < numPonds; i++)
     {
         failfish *f = (ponds + i)->fl->head;
-        printf("%d %s %d", (ponds + i)->num, (ponds + i)->name, f->num);
+        fprintf(ofp, "%d %s %d", (ponds + i)->num, (ponds + i)->name, f->num);
 
         for (j = 0; j < ((ponds + i)->thi) - 1; j++)
         {
-            printf(" %d", f->next->num);
+            fprintf(ofp, " %d", f->next->num);
             f = f->next;
         }
-        printf("\n");
+        fprintf(ofp, "\n");
     }
 }
 
@@ -372,7 +372,7 @@ pond *pond_queue_sorter(pond *ponds, int numPonds)
     return ponds;
 }
 
-pond *second_course(pond *ponds, int numPonds)
+pond *second_course(FILE *ofp, pond *ponds, int numPonds)
 {
     ponds = initialize_failfish_queue(ponds, numPonds);
 
@@ -384,21 +384,8 @@ pond *second_course(pond *ponds, int numPonds)
 
     fish_list *temp;
     fish_list *secondCourseQueue = new_failfish_list();
-    /*
-        1. compare the heads in each queue
-        2. remove the largest value & check for empty queues
-        3. update the queues
-        4. repeat 2-3
-        5. if multiple groups have the same number at the head,
-           you remove the head from the queue with the least
-           amount of fish
-    */
-
-    //Eats all of the fish instead of saving the final one
-    //maybe try two seperate if statements so that it saves atleast one fish
-    //one of the if statements checks for if the numPonds is equal to i-1. This pond
-    //would be handled differently
-    printf("\nSecond Course\n");
+    
+    fprintf(ofp, "\nSecond Course\n");
 
     for (i = 0; i < numPonds; i++)
     {
@@ -407,7 +394,7 @@ pond *second_course(pond *ponds, int numPonds)
         {
             for (j = 0; j < (ponds + i)->thi; j++)
             {
-                printf("\nEaten: Failfish %d from pond %d", temp->head->num, (ponds + i)->num);
+                fprintf(ofp, "\nEaten: Failfish %d from pond %d", temp->head->num, (ponds + i)->num);
                 temp->head = temp->head->next;
             }
         }
@@ -415,14 +402,14 @@ pond *second_course(pond *ponds, int numPonds)
         {
             for (j = 0; j < ((ponds + i)->thi) - 1; j++)
             {
-                printf("\nEaten: Failfish %d from pond %d", temp->head->num, (ponds + i)->num);
+                fprintf(ofp, "\nEaten: Failfish %d from pond %d", temp->head->num, (ponds + i)->num);
                 temp->head = temp->head->next;
             }
         }
         finalPondNum = (ponds + i)->num;
     }
 
-    printf("\nFailfish %d from pond %d remains\n", temp->head->num, finalPondNum);
+    fprintf(ofp, "\n\nFailfish %d from pond %d remains\n", temp->head->num, finalPondNum);
 
     return ponds;
 }
@@ -432,7 +419,7 @@ int main()
     FILE *ifp;
     FILE *ofp;
 
-    ifp = fopen("input2.txt", "r");
+    ifp = fopen("input.txt", "r");
     ofp = fopen("output.txt", "w");
 
     int numPonds = get_num_ponds(ifp);
@@ -442,23 +429,17 @@ int main()
 
     ponds = pond_array_sorter(ponds, numPonds);
 
-    print_initial_pond_status(ponds, numPonds);
+    print_initial_pond_status(ofp, ponds, numPonds);
 
-    ponds = first_course(ponds, numPonds);
+    ponds = first_course(ofp, ponds, numPonds);
 
     ponds = pond_fishlist_sorter(ponds, numPonds);
 
     ponds = pond_fishlist_tail_fixer(ponds, numPonds);
 
-    print_end_pond_status(ponds, numPonds);
+    print_end_pond_status(ofp, ponds, numPonds);
 
-    ponds = second_course(ponds, numPonds);
-
-    for (int i = 0; i < numPonds; i++)
-    {
-        printf("%d", (ponds + i)->fq->head->num);
-        printf("%d", (ponds + i)->fq->tail->num);
-    }
+    ponds = second_course(ofp, ponds, numPonds);
 
     return 0;
 }
