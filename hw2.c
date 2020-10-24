@@ -381,6 +381,59 @@ pond *pond_queue_sorter(pond *ponds, int numPonds)
     return ponds;
 }
 
+pond *second_course(pond *ponds, int numPonds)
+{
+    ponds = initialize_failfish_queue(ponds, numPonds);
+
+    ponds = pond_queue_sorter(ponds, numPonds);
+
+    int i, j, k;
+    int totalNumQueue;
+    int finalPondNum;
+
+    fish_list *temp;
+    fish_list *secondCourseQueue = new_failfish_list();
+    /*
+        1. compare the heads in each queue
+        2. remove the largest value & check for empty queues
+        3. update the queues
+        4. repeat 2-3
+        5. if multiple groups have the same number at the head,
+           you remove the head from the queue with the least
+           amount of fish
+    */
+
+   //Eats all of the fish instead of saving the final one
+   //maybe try two seperate if statements so that it saves atleast one fish
+   //one of the if statements checks for if the numPonds is equal to i-1. This pond
+   //would be handled differently
+    for(i = 0; i < numPonds; i++)
+    {
+        temp = (ponds + i)->fq;
+        if (i < numPonds)
+        {
+            for (j = 0; j < (ponds + i)->thi; j++)
+            {
+                printf("\n%d fish from pond %d was eaten", temp->head->num, (ponds + i)->num);
+                temp->head = temp->head->next;
+            }
+        }
+        if(i == numPonds - 1)
+        {
+            for (j = 0; j < ((ponds + i)->thi) - 1; j++)
+            {
+                printf("\n%d fish from pond %d was eaten", temp->head->num, (ponds + i)->num);
+                temp->head = temp->head->next;
+            }
+        }
+        finalPondNum = (ponds + i)->num;
+    }
+
+    printf("\n%d fish from pond %d remains\n", temp->head->num, finalPondNum);
+
+    return ponds;
+}
+
 int main()
 {
     FILE *ifp;
