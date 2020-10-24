@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "leak_detector_c.h"
 
 typedef struct failfish
 {
@@ -416,6 +417,8 @@ pond *second_course(FILE *ofp, pond *ponds, int numPonds)
 
 int main()
 {
+    atexit(report_mem_leak);
+
     FILE *ifp;
     FILE *ofp;
 
