@@ -2,12 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-//Functions to use in program
 
-/*
-failfish_queue *create_failfish_queue(char *pondname, int n, int e, int th);
-void print_failfish_queue(failfish_queue *q);
-*/
 
 typedef struct failfish {
 	int num;
@@ -27,12 +22,10 @@ typedef struct pond {
 	int ei;
     int thi;
     fish_list *fl;
+    fish_list *fq;
 } pond;
 
-typedef struct {
-  failfish *head;
-  failfish *tail;
-} failfish_queue;
+
 
 failfish *create_failfish(int sequence_number)
 {
@@ -146,11 +139,12 @@ pond *pond_array_constructor(FILE *ifp, int numPonds)
 
     failfish *f;
 
-    for(i = 0; i < numPonds; i++)
+    for (i = 0; i < numPonds; i++)
     {
         read_pond(ifp, ponds + i);
         (ponds + i)->fl = new_failfish_list();
-        for(j = (ponds + i)->ni; j > 0; j--)
+        (ponds + i)->fq = new_failfish_list();
+        for (j = (ponds + i)->ni; j > 0; j--)
         {
             f = create_failfish(j);
             failfish_list_add((ponds + i)->fl, f);
@@ -166,18 +160,18 @@ pond *pond_array_sorter(pond *ponds, int numPonds)
 
     pond *sortedPonds;
 
-	for (i = 0; i < numPonds; i++)                     //Loop for ascending ordering
-	{
-		for (j = 0; j < numPonds; j++)             //Loop for comparing other values
-		{
-			if ((ponds + j)->num > (ponds + i)->num)                //Comparing other array elements
-			{
-				pond tmp = ponds[i];         //Using temporary variable for storing last value
-				ponds[i] = ponds[j];            //replacing value
-				ponds[j] = tmp;             //storing last value
-			}
-		}
-	}
+    for (i = 0; i < numPonds; i++)
+    {
+        for (j = 0; j < numPonds; j++) 
+        {
+            if ((ponds + j)->num > (ponds + i)->num)
+            {
+                pond tmp = ponds[i]; 
+                ponds[i] = ponds[j]; 
+                ponds[j] = tmp;     
+            }
+        }
+    }
 
     return ponds;
 }
@@ -186,34 +180,32 @@ void print_initial_pond_status(pond *ponds, int numPonds)
 {
     int i, j;
 
-    //failfish *f = (ponds + i)->fl->head;
-    
     printf("Initial Pond Status\n");
-    for(i = 0; i < numPonds; i++)
+    for (i = 0; i < numPonds; i++)
     {
         failfish *f = (ponds + i)->fl->head;
         printf("%d %s %d", (ponds + i)->num, (ponds + i)->name, f->num);
 
-        for(j = 0; j < ((ponds + i)->ni) - 1; j++)
+        for (j = 0; j < ((ponds + i)->ni) - 1; j++)
         {
             printf(" %d", f->next->num);
             f = f->next;
         }
         printf("\n");
-    }    
+    } 
 }
 
 void clear_links_or_dispose(failfish *f_to_delete, int dispose)
 {
-  if(dispose != 0) 
-  {
-    dispose_failfish(f_to_delete);
-  } 
-  else 
-  {
-    f_to_delete->next = NULL;
-    f_to_delete->prev = NULL;
-  }
+    if (dispose != 0)
+    {
+        dispose_failfish(f_to_delete);
+    }
+    else
+    {
+        f_to_delete->next = NULL;
+        f_to_delete->prev = NULL;
+    }
 }
 
 void fish_list_delete(fish_list *fl, failfish *f_to_delete, int dispose)
@@ -221,22 +213,22 @@ void fish_list_delete(fish_list *fl, failfish *f_to_delete, int dispose)
     //failfish *f = fl->head;
     //failfish *n;
 
-    if(f_to_delete->next == f_to_delete) 
+    if (f_to_delete->next == f_to_delete)
     {
-      clear_links_or_dispose(f_to_delete, dispose);
-      fl->head = NULL;
-      fl->tail = NULL;
-      return;
+        clear_links_or_dispose(f_to_delete, dispose);
+        fl->head = NULL;
+        fl->tail = NULL;
+        return;
     }
 
-    if(fl->head == f_to_delete)
+    if (fl->head == f_to_delete)
     {
-      fl->head = f_to_delete->next;
+        fl->head = f_to_delete->next;
     }
 
-    if(fl->tail == f_to_delete) 
+    if (fl->tail == f_to_delete)
     {
-      fl->tail = f_to_delete->prev;
+        fl->tail = f_to_delete->prev;
     }
 
     f_to_delete->prev->next = f_to_delete->next;
@@ -251,23 +243,21 @@ pond *first_course(pond *ponds, int numPonds)
 
     fish_list *temp;
 
-    for(i = 0; i < numPonds; i++)
+    for (i = 0; i < numPonds; i++)
     {
         printf("Pond %d: %s\n", (ponds + i)->num, (ponds + i)->name);
         temp = (ponds + i)->fl;
-        for(j = 0; j < ((ponds + i)->ei) - 1; j++)
+        for (j = 0; j < ((ponds + i)->ei) - 1; j++)
         {
             temp->head = temp->head->next;
             temp->tail = temp->head->prev;
         }
 
-        for(j = 0; j < ((ponds + i)->ni) - ((ponds + i)->thi); j++)
+        for (j = 0; j < ((ponds + i)->ni) - ((ponds + i)->thi); j++)
         {
-            
             printf("Failfish %d eaten\n", temp->head->num);
-            //fish_list_delete((ponds + i)->fl, fish, 0);
             fish_list_delete((ponds + i)->fl, temp->head, (ponds + i)->thi);
-            for(k = 0; k < ((ponds + i)->ei) - 1; k++)
+            for (k = 0; k < ((ponds + i)->ei) - 1; k++)
             {
                 temp->head = temp->head->next;
                 temp->tail = temp->head->prev;
