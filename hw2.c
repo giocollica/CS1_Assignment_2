@@ -149,6 +149,11 @@ static pond *pond_array_constructor(FILE *ifp, int numPonds)
     return ponds;
 }
 
+static void dispose_pond(pond *p)
+{
+    free(p);
+}
+
 static pond *pond_array_sorter(pond *ponds, int numPonds)
 {
     int i, j;
