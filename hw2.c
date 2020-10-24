@@ -205,9 +205,12 @@ void print_initial_pond_status(pond *ponds, int numPonds)
 
 void clear_links_or_dispose(failfish *f_to_delete, int dispose)
 {
-  if(dispose != 0) {
+  if(dispose != 0) 
+  {
     dispose_failfish(f_to_delete);
-  } else {
+  } 
+  else 
+  {
     f_to_delete->next = NULL;
     f_to_delete->prev = NULL;
   }
@@ -282,22 +285,16 @@ pond *pond_fishlist_sorter(pond *ponds, int numPonds)
     pond *sortedPonds;
     for (k = 0; k < numPonds; k++)
     {
-        for (i = 0; i < (ponds + k)->thi; i++) //Loop for ascending ordering
+        for (i = 0; i < (ponds + k)->thi; i++)
         {
-            while ((ponds + k)->fl->head->num > (ponds + k)->fl->head->next->num) //Loop for comparing other values
+            while ((ponds + k)->fl->head->num > (ponds + k)->fl->head->next->num)
             {
-
-                //failfish *tmp = (ponds + k)->fl->head;               //Using temporary variable for storing last value
-                (ponds + k)->fl->head = (ponds + k)->fl->head->next; //replacing value
-                                                                     //(ponds + k)->fl->head->next = tmp;                   //storing last value
+                (ponds + k)->fl->head = (ponds + k)->fl->head->next;
             }
 
-            while ((ponds + k)->fl->head->num > (ponds + k)->fl->tail->num) //Loop for comparing other values
+            while ((ponds + k)->fl->head->num > (ponds + k)->fl->tail->num) 
             {
-
-                //failfish *tmp = (ponds + k)->fl->head;               //Using temporary variable for storing last value
-                (ponds + k)->fl->head = (ponds + k)->fl->head->next; //replacing value
-                                                                     //(ponds + k)->fl->head->next = tmp;                   //storing last value
+                (ponds + k)->fl->head = (ponds + k)->fl->head->next;
             }
         }
     }
