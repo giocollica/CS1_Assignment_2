@@ -337,6 +337,19 @@ void print_end_pond_status(pond *ponds, int numPonds)
     }    
 }
 
+pond *initialize_failfish_queue(pond *ponds, int numPonds)
+{
+    int i, j, k;
+
+    for (i = 0; i < numPonds; i++)
+    {
+        (ponds + i)->fq->head = (ponds + i)->fl->head;
+        (ponds + i)->fq->tail = (ponds + i)->fl->tail;
+    }
+
+    return ponds;
+}
+
 int main()
 {
     FILE *ifp;
