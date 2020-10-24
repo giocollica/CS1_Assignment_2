@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
-
 typedef struct failfish
 {
     int num;
@@ -27,8 +25,6 @@ typedef struct pond
     fish_list *fl;
     fish_list *fq;
 } pond;
-
-
 
 failfish *create_failfish(int sequence_number)
 {
@@ -160,13 +156,13 @@ pond *pond_array_sorter(pond *ponds, int numPonds)
 
     for (i = 0; i < numPonds; i++)
     {
-        for (j = 0; j < numPonds; j++) 
+        for (j = 0; j < numPonds; j++)
         {
             if ((ponds + j)->num > (ponds + i)->num)
             {
-                pond tmp = ponds[i]; 
-                ponds[i] = ponds[j]; 
-                ponds[j] = tmp;     
+                pond tmp = ponds[i];
+                ponds[i] = ponds[j];
+                ponds[j] = tmp;
             }
         }
     }
@@ -238,9 +234,11 @@ pond *first_course(pond *ponds, int numPonds)
 
     fish_list *temp;
 
+    printf("\nFirst Course\n");
+
     for (i = 0; i < numPonds; i++)
     {
-        printf("Pond %d: %s\n", (ponds + i)->num, (ponds + i)->name);
+        printf("\nPond %d: %s\n", (ponds + i)->num, (ponds + i)->name);
         temp = (ponds + i)->fl;
         for (j = 0; j < ((ponds + i)->ei) - 1; j++)
         {
@@ -277,7 +275,7 @@ pond *pond_fishlist_sorter(pond *ponds, int numPonds)
                 (ponds + k)->fl->head = (ponds + k)->fl->head->next;
             }
 
-            while ((ponds + k)->fl->head->num > (ponds + k)->fl->tail->num) 
+            while ((ponds + k)->fl->head->num > (ponds + k)->fl->tail->num)
             {
                 (ponds + k)->fl->head = (ponds + k)->fl->head->next;
             }
@@ -294,14 +292,14 @@ pond *pond_fishlist_tail_fixer(pond *ponds, int numPonds)
     pond *sortedPonds;
     for (k = 0; k < numPonds; k++)
     {
-        for (i = (ponds + i)->thi; i > 0; i--) 
+        for (i = (ponds + i)->thi; i > 0; i--)
         {
-            while ((ponds + k)->fl->tail->num < (ponds + k)->fl->tail->next->num) 
+            while ((ponds + k)->fl->tail->num < (ponds + k)->fl->tail->next->num)
             {
                 (ponds + k)->fl->tail = (ponds + k)->fl->tail->next;
             }
 
-            while ((ponds + k)->fl->tail->num < (ponds + k)->fl->tail->num) 
+            while ((ponds + k)->fl->tail->num < (ponds + k)->fl->tail->num)
             {
                 (ponds + k)->fl->tail = (ponds + k)->fl->tail->next;
             }
@@ -315,7 +313,7 @@ void print_end_pond_status(pond *ponds, int numPonds)
 {
     int i, j;
 
-    printf("End of Course Pond Status\n");
+    printf("\nEnd of Course Pond Status\n");
     for (i = 0; i < numPonds; i++)
     {
         failfish *f = (ponds + i)->fl->head;
@@ -351,13 +349,13 @@ pond *pond_queue_sorter(pond *ponds, int numPonds)
 
     for (i = 0; i < numPonds; i++)
     {
-        for (j = 0; j < numPonds; j++) 
+        for (j = 0; j < numPonds; j++)
         {
             if ((ponds + j)->fl->head->num < (ponds + i)->fl->head->num)
             {
                 pond tmp = ponds[i];
                 ponds[i] = ponds[j];
-                ponds[j] = tmp;     
+                ponds[j] = tmp;
             }
             if ((ponds + j)->fl->head->num == (ponds + i)->fl->head->num)
             {
@@ -365,7 +363,7 @@ pond *pond_queue_sorter(pond *ponds, int numPonds)
                 {
                     pond tmp = ponds[i];
                     ponds[i] = ponds[j];
-                    ponds[j] = tmp;      
+                    ponds[j] = tmp;
                 }
             }
         }
@@ -396,39 +394,38 @@ pond *second_course(pond *ponds, int numPonds)
            amount of fish
     */
 
-   //Eats all of the fish instead of saving the final one
-   //maybe try two seperate if statements so that it saves atleast one fish
-   //one of the if statements checks for if the numPonds is equal to i-1. This pond
-   //would be handled differently
-    for(i = 0; i < numPonds; i++)
+    //Eats all of the fish instead of saving the final one
+    //maybe try two seperate if statements so that it saves atleast one fish
+    //one of the if statements checks for if the numPonds is equal to i-1. This pond
+    //would be handled differently
+    printf("\nSecond Course\n");
+
+    for (i = 0; i < numPonds; i++)
     {
         temp = (ponds + i)->fq;
         if (i < numPonds)
         {
             for (j = 0; j < (ponds + i)->thi; j++)
             {
-                printf("\n%d fish from pond %d was eaten", temp->head->num, (ponds + i)->num);
+                printf("\nEaten: Failfish %d from pond %d", temp->head->num, (ponds + i)->num);
                 temp->head = temp->head->next;
             }
         }
-        if(i == numPonds - 1)
+        if (i == numPonds - 1)
         {
             for (j = 0; j < ((ponds + i)->thi) - 1; j++)
             {
-                printf("\n%d fish from pond %d was eaten", temp->head->num, (ponds + i)->num);
+                printf("\nEaten: Failfish %d from pond %d", temp->head->num, (ponds + i)->num);
                 temp->head = temp->head->next;
             }
         }
         finalPondNum = (ponds + i)->num;
     }
 
-    printf("\n%d fish from pond %d remains\n", temp->head->num, finalPondNum);
+    printf("\nFailfish %d from pond %d remains\n", temp->head->num, finalPondNum);
 
     return ponds;
 }
-
-
-
 
 int main()
 {
