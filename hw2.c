@@ -153,8 +153,6 @@ static pond *pond_array_sorter(pond *ponds, int numPonds)
 {
     int i, j;
 
-    pond *sortedPonds;
-
     for (i = 0; i < numPonds; i++)
     {
         for (j = 0; j < numPonds; j++)
@@ -264,9 +262,8 @@ static pond *first_course(FILE *ofp, pond *ponds, int numPonds)
 
 static pond *pond_fishlist_sorter(pond *ponds, int numPonds)
 {
-    int i, j, k;
+    int i, k;
 
-    pond *sortedPonds;
     for (k = 0; k < numPonds; k++)
     {
         for (i = 0; i < (ponds + k)->thi; i++)
@@ -288,9 +285,8 @@ static pond *pond_fishlist_sorter(pond *ponds, int numPonds)
 
 static pond *pond_fishlist_tail_fixer(pond *ponds, int numPonds)
 {
-    int i, j, k;
+    int i, k;
 
-    pond *sortedPonds;
     for (k = 0; k < numPonds; k++)
     {
         for (i = (ponds + i)->thi; i > 0; i--)
@@ -331,7 +327,7 @@ static void print_end_pond_status(FILE *ofp, pond *ponds, int numPonds)
 
 static pond *initialize_failfish_queue(pond *ponds, int numPonds)
 {
-    int i, j, k;
+    int i;
 
     for (i = 0; i < numPonds; i++)
     {
@@ -345,8 +341,6 @@ static pond *initialize_failfish_queue(pond *ponds, int numPonds)
 static pond *pond_queue_sorter(pond *ponds, int numPonds)
 {
     int i, j;
-
-    pond *sortedPonds;
 
     for (i = 0; i < numPonds; i++)
     {
@@ -379,12 +373,10 @@ static pond *second_course(FILE *ofp, pond *ponds, int numPonds)
 
     ponds = pond_queue_sorter(ponds, numPonds);
 
-    int i, j, k;
-    int totalNumQueue;
+    int i, j;
     int finalPondNum;
 
     fish_list *temp;
-    fish_list *secondCourseQueue = new_failfish_list();
     
     fprintf(ofp, "\nSecond Course\n");
 
