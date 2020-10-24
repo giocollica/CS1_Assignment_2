@@ -173,12 +173,6 @@ static pond *pond_array_constructor(FILE *ifp, int numPonds)
     return ponds;
 }
 
-//function to free a single pond from memory
-static void dispose_pond(pond *p)
-{
-    free(p);
-}
-
 //function to sort the pond array from least to greatest by pond number
 static pond *pond_array_sorter(pond *ponds, int numPonds)
 {
@@ -464,22 +458,18 @@ static pond *second_course(FILE *ofp, pond *ponds, int numPonds)
 //function to free all allocated memory for ponds, failfish list, and failfish
 static void dispose_ponds_all(pond *ponds, int numPonds)
 {
-    int i, j, k;
+    int i;
 
     failfish *f;
     failfish *f2;
     failfish *n;
     fish_list *fl;
-    fish_list *fq;
 
     for(i = 0; i < numPonds; i++)
     {
         f = (ponds + i)->fl->head;
         f2 = (ponds + i)->fq->head;
-        fl = (ponds + i)->fl;
-        fq = (ponds + i)->fq;
-
-        dispose_pond(ponds + i);
+        fl = (ponds + i)->fl;   
 
         if (f == NULL)
         {
@@ -503,6 +493,8 @@ static void dispose_ponds_all(pond *ponds, int numPonds)
         dispose_failfish_list((ponds + i)->fl);
         dispose_failfish_list((ponds + i)->fq);
     }
+
+    free(ponds);
 }
 
 //main function
