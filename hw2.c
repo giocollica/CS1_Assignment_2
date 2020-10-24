@@ -439,7 +439,7 @@ int main()
     FILE *ifp;
     FILE *ofp;
 
-    ifp = fopen("input.txt", "r");
+    ifp = fopen("input2.txt", "r");
     ofp = fopen("output.txt", "w");
 
     int numPonds = get_num_ponds(ifp);
@@ -455,7 +455,17 @@ int main()
 
     ponds = pond_fishlist_sorter(ponds, numPonds);
 
+    ponds = pond_fishlist_tail_fixer(ponds, numPonds);
+
     print_end_pond_status(ponds, numPonds);
+
+    ponds = second_course(ponds, numPonds);
+
+    for (int i = 0; i < numPonds; i++)
+    {
+        printf("%d", (ponds + i)->fq->head->num);
+        printf("%d", (ponds + i)->fq->tail->num);
+    }
 
     return 0;
 }
