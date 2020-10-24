@@ -412,6 +412,49 @@ static pond *second_course(FILE *ofp, pond *ponds, int numPonds)
     return ponds;
 }
 
+static void dispose_ponds_all(pond *ponds, int numPonds)
+{
+    int i, j, k;
+
+    failfish *f;
+    failfish *f2;
+    failfish *n;
+    fish_list *fl;
+    fish_list *fq;
+
+    for(i = 0; i < numPonds; i++)
+    {
+        f = (ponds + i)->fl->head;
+        f2 = (ponds + i)->fq->head;
+        fl = (ponds + i)->fl;
+        fq = (ponds + i)->fq;
+
+        dispose_pond(ponds + i);
+
+        if (f == NULL)
+        {
+            dispose_failfish_list((ponds + i)->fl);
+            return;
+        }
+
+        if (f2 == NULL)
+        {
+            dispose_failfish_list((ponds + i)->fq);
+            return;
+        }
+        
+        do
+        {
+            n = f->next;
+            dispose_failfish(f);
+            f = n;
+        } while (f != fl->head);
+
+        dispose_failfish_list((ponds + i)->fl);
+        dispose_failfish_list((ponds + i)->fq);
+    }
+}
+
 int main(void)
 {
     atexit(report_mem_leak);
@@ -440,6 +483,8 @@ int main(void)
     print_end_pond_status(ofp, ponds, numPonds);
 
     ponds = second_course(ofp, ponds, numPonds);
+
+    dispose_ponds_all(ponds, numPonds);
 
     return 0;
 }
