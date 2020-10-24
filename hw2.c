@@ -350,6 +350,37 @@ pond *initialize_failfish_queue(pond *ponds, int numPonds)
     return ponds;
 }
 
+pond *pond_queue_sorter(pond *ponds, int numPonds)
+{
+    int i, j;
+
+    pond *sortedPonds;
+
+    for (i = 0; i < numPonds; i++)
+    {
+        for (j = 0; j < numPonds; j++) 
+        {
+            if ((ponds + j)->fl->head->num < (ponds + i)->fl->head->num)
+            {
+                pond tmp = ponds[i];
+                ponds[i] = ponds[j];
+                ponds[j] = tmp;     
+            }
+            if ((ponds + j)->fl->head->num == (ponds + i)->fl->head->num)
+            {
+                if ((ponds + j)->num > (ponds + i)->num)
+                {
+                    pond tmp = ponds[i];
+                    ponds[i] = ponds[j];
+                    ponds[j] = tmp;      
+                }
+            }
+        }
+    }
+
+    return ponds;
+}
+
 int main()
 {
     FILE *ifp;
