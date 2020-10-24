@@ -4,22 +4,25 @@
 
 
 
-typedef struct failfish {
-	int num;
-	struct failfish *next;
+typedef struct failfish
+{
+    int num;
+    struct failfish *next;
     struct failfish *prev;
 } failfish;
 
-typedef struct fish_list {
-	failfish *head;
+typedef struct fish_list
+{
+    failfish *head;
     failfish *tail;
 } fish_list;
 
-typedef struct pond {
-	int num;
-	char *name;
-	int ni;
-	int ei;
+typedef struct pond
+{
+    int num;
+    char *name;
+    int ni;
+    int ei;
     int thi;
     fish_list *fl;
     fish_list *fq;
@@ -62,18 +65,15 @@ void dispose_failfish_list(fish_list *fl)
 
 void failfish_list_add(fish_list *fl, failfish *new_failfish)
 {
-    if(fl->head == NULL)
+    if (fl->head == NULL)
     {
-        /* If we're adding to an empty list, just set the head equal to the tail equal
-           to the new monster. */
-
         fl->head = new_failfish;
         fl->tail = new_failfish;
         new_failfish->prev = new_failfish;
         new_failfish->next = new_failfish;
-    } else {
-        /* If the list isn't empty, there's a head, so... */
-
+    }
+    else
+    {
         new_failfish->prev = fl->tail;
         new_failfish->next = fl->head;
 
@@ -89,10 +89,8 @@ static int get_num_ponds(FILE *ifp)
     char s[128];
     int num;
 
-    // Get the first line of the file.
     fgets(s, 127, ifp);
 
-    //pull out number from the file
     sscanf(s, "%d", &num);
 
     return num;
@@ -192,7 +190,7 @@ void print_initial_pond_status(pond *ponds, int numPonds)
             f = f->next;
         }
         printf("\n");
-    } 
+    }
 }
 
 void clear_links_or_dispose(failfish *f_to_delete, int dispose)
@@ -210,9 +208,6 @@ void clear_links_or_dispose(failfish *f_to_delete, int dispose)
 
 void fish_list_delete(fish_list *fl, failfish *f_to_delete, int dispose)
 {
-    //failfish *f = fl->head;
-    //failfish *n;
-
     if (f_to_delete->next == f_to_delete)
     {
         clear_links_or_dispose(f_to_delete, dispose);
@@ -320,21 +315,19 @@ void print_end_pond_status(pond *ponds, int numPonds)
 {
     int i, j;
 
-    //failfish *f = (ponds + i)->fl->head;
-    
     printf("End of Course Pond Status\n");
-    for(i = 0; i < numPonds; i++)
+    for (i = 0; i < numPonds; i++)
     {
         failfish *f = (ponds + i)->fl->head;
         printf("%d %s %d", (ponds + i)->num, (ponds + i)->name, f->num);
 
-        for(j = 0; j < ((ponds + i)->thi) - 1; j++)
+        for (j = 0; j < ((ponds + i)->thi) - 1; j++)
         {
             printf(" %d", f->next->num);
             f = f->next;
         }
         printf("\n");
-    }    
+    }
 }
 
 pond *initialize_failfish_queue(pond *ponds, int numPonds)
@@ -433,6 +426,9 @@ pond *second_course(pond *ponds, int numPonds)
 
     return ponds;
 }
+
+
+
 
 int main()
 {
